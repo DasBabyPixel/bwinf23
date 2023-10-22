@@ -20,4 +20,4 @@ Alle möglichen Startpunkt/Endpunkt Kombinationen suchen (und speichern) - Main.
 
 Einen korrekten Graphen aufbauen - TourGraph.java
 
-Dijkstra auf den Graphen für jede Startpunkt/Endpunkt Kombination ausführen. Dann den besten Weg aussuchen - Main.java
+Dijkstra auf den Graphen für jede Startpunkt/Endpunkt Kombination anwenden. Dann den besten Weg aussuchen - Main.java
