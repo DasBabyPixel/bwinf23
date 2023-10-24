@@ -4,4 +4,5 @@ plugins {
 
 rootProject.name = "bwinf"
 
+include("aufgabe4")
 include("aufgabe5")
