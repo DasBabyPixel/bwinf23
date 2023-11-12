@@ -1,6 +1,6 @@
 package de.dasbabypixel.bwinf.a4;
 
-public interface Baustein {
+public sealed interface Baustein permits Baustein.Blau, Baustein.Rot, Baustein.Weiss {
 
     Baustein ROT_OBEN = new Rot(true);
     Baustein ROT_UNTEN = new Rot(false);
@@ -24,7 +24,7 @@ public interface Baustein {
         }
     }
 
-    class Weiss implements Baustein {
+    final class Weiss implements Baustein {
         private Weiss() {
         }
 
@@ -35,7 +35,7 @@ public interface Baustein {
         }
     }
 
-    class Blau implements Baustein {
+    final class Blau implements Baustein {
         private Blau() {
         }
 

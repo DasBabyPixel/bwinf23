@@ -4,9 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Bauplan extends Thread {
+public class Bauplan {
 
-    public static void read(String input) throws IOException {
+    private final Verbindung[][] verbindungen;
+
+    public Bauplan(Verbindung[][] verbindungen) {
+        this.verbindungen = verbindungen;
+    }
+
+    public static Bauplan read(String input) throws IOException {
         var reader = new BufferedReader(new StringReader(input));
         var line = reader.readLine();
         var split = line.split(" ", 2);
@@ -25,9 +31,11 @@ public class Bauplan extends Thread {
             for (var i = 0; i < split.length; i++) {
                 var string = split[i];
                 var segment = BausteinSegment.get(string);
-
+                var id = BausteinSegment.id(segment, string);
+                System.out.println(segment);
             }
             counter++;
         }
+        return new Bauplan(verbindungen);
     }
 }

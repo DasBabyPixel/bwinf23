@@ -1,10 +1,4 @@
 allprojects {
-    extensions.findByType<JavaPluginExtension>()?.apply {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-            vendor = JvmVendorSpec.ADOPTIUM
-        }
-    }
     repositories {
         mavenCentral()
         maven("https://nexus.darkcube.eu/repository/dasbabypixel/")
@@ -16,6 +10,13 @@ allprojects {
         dependencies {
             "testImplementation"(rootProject.libs.junit.jupiter)
             "testRuntimeOnly"(rootProject.libs.junit.platform.launcher)
+        }
+        val javaPlugin = extensions.getByType<JavaPluginExtension>()
+        javaPlugin.apply {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+                vendor = JvmVendorSpec.ADOPTIUM
+            }
         }
     }
 }
