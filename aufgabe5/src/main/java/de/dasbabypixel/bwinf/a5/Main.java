@@ -13,9 +13,18 @@ public class Main {
     public static final boolean LOGGING = false;
 
     public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.err.println("Bitte gib einen Pfad auf dem Dateisystem an");
+            return;
+        }
+
         var path = Path.of(args[0], Arrays.copyOfRange(args, 1, args.length));
-        var main = new Main();
-        main.work(path);
+        if (!Files.exists(path)) {
+            System.err.println("Die Datei " + path.toAbsolutePath().normalize() + " existiert nicht");
+            return;
+        }
+        var list = new Main().work(path);
+        list.forEach(System.out::println);
     }
 
     public List<Tourpoint> work(BufferedReader reader) throws IOException {
@@ -48,10 +57,10 @@ public class Main {
         return bestTour;
     }
 
-    public void work(Path path) throws IOException {
-        var reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-        work(reader);
-        reader.close();
+    public List<Tourpoint> work(Path path) throws IOException {
+        try (var reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            return work(reader);
+        }
     }
 
     private List<StartEntry> collectStartEntries(List<Tourpoint> tour) {
