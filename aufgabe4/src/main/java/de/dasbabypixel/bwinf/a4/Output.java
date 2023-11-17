@@ -7,8 +7,11 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Output {
+    // Die Anzahl der Input-Möglichkeiten
     private final int possibilities;
+    // Zwei-Dimensionale Repräsentation der Inputs für eine Möglichkeit
     private final boolean[][] inputs;
+    // Zwei-Dimensionale Repräsentation der Outputs für eine Möglichkeit
     private final boolean[][] outputs;
 
     public Output(int inputCount, int outputCount) {
@@ -26,6 +29,10 @@ public class Output {
         return possibilities;
     }
 
+    /**
+     * Diese Methode generiert ein boolean[], welches das eingegeben int als bits repräsentiert.
+     * Das ist eine einfache Möglichkeit alle Inputs für die Lampen zu berechnen, da ein neuer Input für jedes "id++" generiert wird.
+     */
     public boolean[] possibility(int id) {
         var res = new boolean[inputs.length];
         for (int i = 0; i < res.length; i++) {

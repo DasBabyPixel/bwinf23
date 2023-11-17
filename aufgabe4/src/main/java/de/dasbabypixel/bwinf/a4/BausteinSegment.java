@@ -2,6 +2,7 @@ package de.dasbabypixel.bwinf.a4;
 
 public enum BausteinSegment {
     r("r"), R("R"), W("W"), B("B"), X("X"), INPUT("Q"), OUTPUT("L");
+    public static final int NO_ID = -1;
     private final String string;
 
     BausteinSegment(String string) {
@@ -18,10 +19,10 @@ public enum BausteinSegment {
     }
 
     public static int id(BausteinSegment segment, String name) {
-        if (segment == null) return Verbindung.NO_ID;
+        if (segment == null) return NO_ID;
         return switch (segment) {
             case INPUT, OUTPUT -> Integer.parseInt(name.substring(INPUT.toString().length()));
-            default -> Verbindung.NO_ID;
+            default -> NO_ID;
         };
     }
 

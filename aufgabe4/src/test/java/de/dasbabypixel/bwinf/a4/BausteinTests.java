@@ -8,6 +8,8 @@ public class BausteinTests {
 
     @Test
     void test() {
+        // Hier sind alle Tests für die einzelnen Bausteine, dass deren Korrektheit bewiesen ist.
+        // Die Werte sind aus der Angabe abgelesen.
         var weiss = Baustein.WEISS;
         assertArrayEquals(weiss.lichter(false, false), new boolean[]{true, true});
         assertArrayEquals(weiss.lichter(false, true), new boolean[]{true, true});
