@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Main {
+    @SuppressWarnings("DuplicatedCode")
     public Output work(BufferedReader reader) throws IOException {
         var line = reader.readLine();
         var split = line.split(" ", 2);

@@ -13,6 +13,11 @@ public class Main {
     public static final boolean LOGGING = false;
 
     public static void main(String[] args) throws IOException {
+        try {
+            Thread.sleep(1000000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         var path = Path.of(args[0], Arrays.copyOfRange(args, 1, args.length));
         var main = new Main();
         main.work(path);

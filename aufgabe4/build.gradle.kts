@@ -1,14 +1,7 @@
-import com.gluonhq.substrate.Constants
-import com.gluonhq.substrate.target.WebTargetConfiguration
-import org.openjfx.gradle.JavaFXPlatform
-import java.nio.file.Path
-import java.util.stream.Collectors
-import java.util.stream.Stream
-
 plugins {
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("com.gluonhq.gluonfx-gradle-plugin") version "1.0.22-custom-SNAPSHOT"
+    id("com.gluonhq.gluonfx-gradle-plugin") version "1.0.23-custom-SNAPSHOT"
 }
 
 application {
