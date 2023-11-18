@@ -32,7 +32,6 @@ public class TourGraph {
             points.add(node);
             last = node;
         }
-        graph.writeAdjacencyMatrix(System.out);
     }
 
     public List<Tourpoint> search(Tourpoint beginning, Tourpoint end) {
