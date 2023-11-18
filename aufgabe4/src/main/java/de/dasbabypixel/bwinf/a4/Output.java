@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Output {
+    private final int inputCount;
+    private final int outputCount;
     // Die Anzahl der Input-Möglichkeiten
     private final int possibilities;
     // Zwei-Dimensionale Repräsentation der Inputs für eine Möglichkeit
@@ -20,9 +22,11 @@ public class Output {
             possibilities *= 2;
             if (possibilities == 0) possibilities = 2;
         }
+        this.inputCount = inputCount;
+        this.outputCount = outputCount;
         this.possibilities = possibilities;
-        inputs = new boolean[inputCount][possibilities];
-        outputs = new boolean[outputCount][possibilities];
+        inputs = new boolean[possibilities][inputCount];
+        outputs = new boolean[possibilities][outputCount];
     }
 
     public int possibilities() {
@@ -34,11 +38,19 @@ public class Output {
      * Das ist eine einfache Möglichkeit alle Inputs für die Lampen zu berechnen, da ein neuer Input für jedes "id++" generiert wird.
      */
     public boolean[] possibility(int id) {
-        var res = new boolean[inputs.length];
+        var res = new boolean[inputCount];
         for (int i = 0; i < res.length; i++) {
             res[res.length - i - 1] = (id & (1 << i)) != 0;
         }
         return res;
+    }
+
+    public int inputCount() {
+        return inputCount;
+    }
+
+    public int outputCount() {
+        return outputCount;
     }
 
     public boolean[][] inputs() {
@@ -47,72 +59,5 @@ public class Output {
 
     public boolean[][] outputs() {
         return outputs;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Output output = (Output) o;
-        return possibilities == output.possibilities && Arrays.deepEquals(inputs, output.inputs) && Arrays.deepEquals(outputs, output.outputs);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(possibilities);
-        result = 31 * result + Arrays.deepHashCode(inputs);
-        result = 31 * result + Arrays.deepHashCode(outputs);
-        return result;
-    }
-
-    public static Output load(BufferedReader reader) throws IOException {
-        var line = reader.readLine().strip();
-        var split = line.split(" ");
-        var inputCount = Integer.parseInt(split[0]);
-        var outputCount = Integer.parseInt(split[1]);
-        var output = new Output(inputCount, outputCount);
-        var possibilities = output.possibilities();
-        line = reader.readLine().strip();
-        int i = 0;
-        for (var c : line.toCharArray()) {
-            var b = c == '1';
-            output.inputs[i / possibilities][i++ % possibilities] = b;
-        }
-        line = reader.readLine().strip();
-        i = 0;
-        for (var c : line.toCharArray()) {
-            var b = c == '1';
-            output.outputs[i / possibilities][i++ % possibilities] = b;
-        }
-        return output;
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        sb.append(inputs.length).append(' ').append(outputs.length).append('\n');
-        for (boolean[] inputA : inputs) {
-            for (boolean b : inputA) {
-                sb.append(b ? 1 : 0);
-            }
-        }
-        sb.append('\n');
-        for (boolean[] outputA : outputs) {
-            for (boolean b : outputA) {
-                sb.append(b ? 1 : 0);
-            }
-        }
-        return sb.toString();
-    }
-
-    public String toPretty() {
-        var sb = new StringBuilder();
-        for (int i = 0; i < possibilities; i++) {
-            for (boolean[] input : inputs) sb.append(input[i] ? 1 : 0);
-            sb.append(" -> ");
-            for (boolean[] output : outputs) sb.append(output[i] ? 1 : 0);
-            sb.append('\n');
-        }
-        return sb.toString();
     }
 }
