@@ -1,4 +1,4 @@
-class Zeile {
+class Spalte {
     constructor(breite, segmente) {
         this.breite = breite;
         this.segmente = segmente;
@@ -92,8 +92,9 @@ const BausteinSegmentEnum = {
     X: new BausteinSegment("X")
 };
 
-let zeile = new Zeile(2, [BausteinSegmentEnum.R, BausteinSegmentEnum.r]);
+let spalte = new Spalte(2, [BausteinSegmentEnum.R, BausteinSegmentEnum.r]);
+console.log(spalte)
 
-let output = zeile.apply([false, true]);
+let output = spalte.apply([false, false]);
 
-console.log(output.toString());
+console.log(output);

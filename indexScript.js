@@ -13,6 +13,10 @@ let hoehe;
 button.addEventListener("click", () => {
     laenge = inputLaenge.value;
     hoehe = inputHoehe.value;
+    laenger = parseInt(laenge);
+    sven = parseInt(laenge);
+    sven++
+    console.log(sven);
     createPlayground();
 });
 
@@ -26,7 +30,7 @@ function makeBorderGreen(block) {
     weissWW.style.border = "1px solid black";
     rot_rR.style.border = "1px solid black";
     rotRr.style.border = "1px solid black";
-    block.style.border = "2px solid green";
+    block.style.border = "3px solid lightgreen";
 }
 
 blauBB.addEventListener("click", () => {
@@ -63,22 +67,23 @@ rotRr.addEventListener("click", () => {
 
 
 
+let laenger
 
-// indexScript.js
+let sven
 
-// ... (Your existing code)
 
 function createPlayground() {
+
     const playground = document.getElementById("playground");
     playground.innerHTML = ""; // Clear previous content
+    const cellSize = `${100/(laenger)}vw`;
 
-    const cellSize = `calc(${Math.min(window.innerWidth, window.innerHeight) / laenge}px)`;
 
     for (let i = 0; i < hoehe; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
 
-        for (let j = 0; j < laenge; j++) {
+        for (let j = -1; j < laenger; j++) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
             cell.id = `cell-${i}-${j}`; // Unique ID based on position
@@ -89,28 +94,49 @@ function createPlayground() {
             // Add event listeners for mouseover and mouseout events
             cell.addEventListener("mouseover", handleCellHover);
             cell.addEventListener("mouseout", handleCellMouseOut);
-            cell.addEventListener("click", handleCellClick)
-
+            cell.addEventListener("click", handleCellClick);
             row.appendChild(cell);
+            // set first column to Lamps
+            if (j == -1) {
+                cell.innerHTML = "aus";
+                cell.style.color = "rgba(15, 15, 15, 0.2)";
+                cell.id = `cell-${i}-Lamp`;
+                cell.style.backgroundImage = "url('image/lampeAus.jpg')";
+                cell.removeEventListener("mouseover", handleCellHover);
+                cell.removeEventListener("mouseout", handleCellMouseOut);
+                cell.removeEventListener("click", handleCellClick);
+                cell.addEventListener("click", () => {
+                    if (cell.innerHTML == "an") {
+                        cell.innerHTML = "aus";
+                        cell.style.backgroundImage = "url('image/lampeAus.jpg')";
+                    } else {
+                        cell.innerHTML = "an";
+                        cell.style.backgroundImage = "url('image/lampeAn.jpg')";
+                    }
+                });
+            }
         }
-
         playground.appendChild(row);
     }
 }
 
 function handleCellHover(event) {
+    if (selBlockBB == false && selBlockWW == false && selBlock_rR == false && selBlockRr == false) {
+        return;
+    }
+    if (event.target.id.split("-")[1] == hoehe - 1) {
+        return;
+    }
+
     const hoveredCell = event.target;
-    hoveredCell.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Darken the hovered cell
-
-    // Get the row and column indices from the cell's ID
     const [rowIndex, colIndex] = hoveredCell.id.split("-").slice(1).map(Number);
-
-    // Get the cell below the hovered cell
     const cellBelow = document.getElementById(`cell-${rowIndex + 1}-${colIndex}`);
 
-    if (cellBelow) {
-        cellBelow.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Darken the cell below
+    if (hoveredCell.innerHTML != "X" || cellBelow.innerHTML != "X") {
+        return;
     }
+    hoveredCell.style.backgroundColor = "lightgreen";
+    cellBelow.style.backgroundColor = "lightgreen";
 }
 
 function handleCellMouseOut(event) {
@@ -135,9 +161,12 @@ function handleCellClick(event) {
     
     // if cell is on the bottom row, alert the user, that he can't click on it
     if (event.target.id.split("-")[1] == hoehe - 1) {
-        alert("Du kannst hier nicht ein Baustein platzieren!");
         return;
     }
+    if (cell.innerHTML != "X" || cellBelow.innerHTML != "X") {
+        return;
+    }
+
     if (selBlockBB == true) {
         cell.innerHTML = "B";
         cellBelow.innerHTML = "B";
@@ -171,4 +200,62 @@ function handleCellClick(event) {
 }
 
 
-// bewegen einzelne Bausteine
+const clear = document.getElementById("delete");
+
+clear.addEventListener("click", () => {
+    if (confirm("Willst du wirklich alles löschen?")==true) {
+        createPlayground();
+    }
+});
+
+document.getElementById("los").addEventListener("click", () => {
+    const booleanArray = new Array(sven);
+    console.log(booleanArray.length);
+    booleanArray[0] = new Array(hoehe);
+    for (let i = 0; i < hoehe; i++) {
+        if (document.getElementById(`cell-${i}-Lamp`).innerHTML=="an") {
+            booleanArray[0][i] = true;
+        } else {
+            booleanArray[0][i] = false;
+        }
+    }
+    const bigArray = new Array(laenger);
+    for (let i = 0; i < laenger; i++) {
+        bigArray[i] = new Array(hoehe);
+        for (let j = 0; j < hoehe; j++) {
+            // bigArray[i][j] = document.getElementById(`cell-${j}-${i}`).innerHTML;
+            if (document.getElementById(`cell-${j}-${i}`).innerHTML=="B") {
+                bigArray[i][j] = BausteinSegmentEnum.B;
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="W") {
+                bigArray[i][j] = BausteinSegmentEnum.W;
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="r") {
+                bigArray[i][j] = BausteinSegmentEnum.r;
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="R") {
+                bigArray[i][j] = BausteinSegmentEnum.R;
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="X") {
+                bigArray[i][j] = BausteinSegmentEnum.X;
+            }
+        }
+    }
+    console.log(booleanArray);
+    console.log(bigArray);
+    for (let i = 1; i < booleanArray.length; i++) {
+        let hehe = new Spalte(hoehe, bigArray[i-1]);
+        console.log('hehe'+i);
+        console.log(hehe);
+        console.log('HEHEAPPLY'+i)
+        console.log(hehe.apply(booleanArray[i-1]));
+        console.log("inserting..");
+        booleanArray[i] = hehe.apply(booleanArray[i-1]);
+    }
+    console.log(booleanArray);
+    for (let i=1; i<laenger; i++) {
+        for (let j=0; j<hoehe; j++) {
+            if (booleanArray[i][j]==true) {
+                //make cell border yellow
+                document.getElementById(`cell-${j}-${i-1}`).style.border = "3px solid yellow";
+            }
+        }
+    }
+});
+
