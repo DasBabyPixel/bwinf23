@@ -66,7 +66,7 @@ function createPlayground() {
     const playground = document.getElementById("playground");
     playground.innerHTML = ""; // Clear previous content
 
-    const cellSize = `${80 / laenge}vw`;
+    const cellSize = `${80 / (laenge + 1)}vw`;
 
 
     for (let i = 0; i < hoehe; i++) {
