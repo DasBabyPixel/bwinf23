@@ -6,6 +6,7 @@
     border: 1px solid black;
     background-image: url("image/rotRr.jpg");
 }
+
 #rot_rR {
     height: 100px;
     width: 50px;
@@ -13,6 +14,7 @@
     border: 1px solid black;
     background-image: url("image/rot_rR.jpg");
 }
+
 #blauBB {
     height: 100px;
     width: 50px;
@@ -20,6 +22,7 @@
     border: 1px solid black;
     background-image: url("image/blauBB.jpg");
 }
+
 #weissWW {
     height: 100px;
     width: 50px;
@@ -27,18 +30,23 @@
     border: 1px solid black;
     background-image: url("image/weissWW.jpg");
 }
+
 .stein {
     margin: 5px;
 }
+
 #bausteine {
     display: flex;
     flex-wrap: wrap;
 }
+
 /* indexStyle.css */
 
 #playground {
+    position: relative;
+    left: 10vw;
     display: grid;
-    grid-template-columns: repeat(var(--laenge), 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 0; /* No gap between cells */
 }
 
@@ -47,8 +55,27 @@
 }
 
 .cell {
+    font-family: "Segoe UI Emoji", emoji;
+    text-underline: red;
+    color: white;
     border: 1px solid black;
     box-sizing: border-box; /* Ensure the border is included in the height */
     background-size: cover;
+}
+
+.lamp {
+    color: rgba(15, 15, 15, 0.2);
+}
+
+.lamp.cell {
+    border: none;
+}
+
+.lamp.off {
+    background-image: url("image/lampeAus.jpg");
+}
+
+.lamp.on {
+    background-image: url("image/lampeAn.jpg");
 }
 

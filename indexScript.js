@@ -7,8 +7,9 @@ const blauBB = document.getElementById("blauBB");
 const weissWW = document.getElementById("weissWW");
 const rot_rR = document.getElementById("rot_rR");
 const rotRr = document.getElementById("rotRr");
-let laenge
+let laenge;
 let hoehe;
+let selected;
 
 createButton.addEventListener("click", () => {
     laenge = parseInt(inputLaenge.value);
@@ -16,11 +17,6 @@ createButton.addEventListener("click", () => {
     console.log("Länge: " + laenge + ", Höhe: " + hoehe)
     createPlayground();
 });
-
-let selBlockBB = false;
-let selBlockWW = false;
-let selBlock_rR = false;
-let selBlockRr = false;
 
 function makeBorderGreen(block) {
     blauBB.style.border = "1px solid black";
@@ -30,37 +26,19 @@ function makeBorderGreen(block) {
     block.style.border = "3px solid lightgreen";
 }
 
-blauBB.addEventListener("click", () => {
-    selBlockBB = true;
-    selBlockWW = false;
-    selBlock_rR = false;
-    selBlockRr = false;
-    makeBorderGreen(blauBB);
-});
+blauBB.addEventListener("click", selectEvent);
+weissWW.addEventListener("click", selectEvent);
+rot_rR.addEventListener("click", selectEvent);
+rotRr.addEventListener("click", selectEvent);
 
-weissWW.addEventListener("click", () => {
-    selBlockBB = false;
-    selBlockWW = true;
-    selBlock_rR = false;
-    selBlockRr = false;
-    makeBorderGreen(weissWW);
-});
+function selectEvent(event) {
+    select(event.target)
+}
 
-rot_rR.addEventListener("click", () => {
-    selBlockBB = false;
-    selBlockWW = false;
-    selBlock_rR = true;
-    selBlockRr = false;
-    makeBorderGreen(rot_rR);
-});
-
-rotRr.addEventListener("click", () => {
-    selBlockBB = false;
-    selBlockWW = false;
-    selBlock_rR = false;
-    selBlockRr = true;
-    makeBorderGreen(rotRr);
-});
+function select(blockType) {
+    selected = blockType
+    makeBorderGreen(selected)
+}
 
 function createPlayground() {
     const playground = document.getElementById("playground");
@@ -68,51 +46,68 @@ function createPlayground() {
 
     const cellSize = `${80 / (laenge + 1)}vw`;
 
-
     for (let i = 0; i < hoehe; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
 
-        for (let j = -1; j < laenge; j++) {
-            const cell = document.createElement("div");
-            cell.classList.add("cell");
-            cell.id = `cell-${i}-${j}`; // Unique ID based on position
-            cell.style.width = cellSize;
-            cell.style.height = cellSize;
-            cell.innerHTML = "X"
-            cell.style.color = "rgba(115, 115, 115, 0.1)";
-            // Add event listeners for mouseover and mouseout events
-            cell.addEventListener("mouseover", handleCellHover);
-            cell.addEventListener("mouseout", handleCellMouseOut);
-            cell.addEventListener("click", handleCellClick);
-            row.appendChild(cell);
-            // set first column to Lamps
-            if (j === -1) {
-                cell.innerHTML = "aus";
-                cell.style.color = "rgba(15, 15, 15, 0.2)";
-                cell.id = `cell-${i}-Lamp`;
-                cell.style.backgroundImage = "url('image/lampeAus.jpg')";
-                cell.removeEventListener("mouseover", handleCellHover);
-                cell.removeEventListener("mouseout", handleCellMouseOut);
-                cell.removeEventListener("click", handleCellClick);
-                cell.addEventListener("click", () => {
-                    if (cell.innerHTML === "an") {
-                        cell.innerHTML = "aus";
-                        cell.style.backgroundImage = "url('image/lampeAus.jpg')";
-                    } else {
-                        cell.innerHTML = "an";
-                        cell.style.backgroundImage = "url('image/lampeAn.jpg')";
-                    }
-                    calculateLight()
-                });
-            }
+        addLamp(row, i, cellSize)
+
+        for (let j = 0; j < laenge; j++) {
+            addCell(row, i, j, cellSize)
         }
         playground.appendChild(row);
     }
 }
 
+function addCell(row, rowId, cellId, cellSize) {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    cell.id = `cell-${rowId}-${cellId}`; // Unique ID based on position
+    cell.style.width = cellSize;
+    cell.style.height = cellSize;
+    cell.innerHTML = "X"
+    cell.style.color = "rgba(115, 115, 115, 0.1)";
+    cell.draggable = false
+    // Add event listeners for mouseover and mouseout events
+    cell.addEventListener("mouseover", handleCellHover);
+    cell.addEventListener("mouseout", handleCellMouseOut);
+    cell.addEventListener("click", handleCellClick);
+    row.appendChild(cell);
+}
+
+function addLamp(row, id, cellSize) {
+    const lamp = document.createElement("div");
+    lamp.classList.add("lamp", "cell", "off");
+    lamp.id = `lamp-${id}`;
+    lamp.style.width = lamp.style.height = cellSize
+    lamp.addEventListener("click", lampClick)
+    row.appendChild(lamp)
+}
+
+function lampClick(event) {
+    const lamp = event.target
+    lampToggle(lamp)
+}
+
+function lampToggle(lamp) {
+    if (lamp.classList.contains("on")) lampOff(lamp)
+    else lampOn(lamp)
+}
+
+function lampOff(lamp) {
+    lamp.classList.add("off");
+    lamp.classList.remove("on");
+    calculateLight()
+}
+
+function lampOn(lamp) {
+    lamp.classList.add("on")
+    lamp.classList.remove("off")
+    calculateLight()
+}
+
 function handleCellHover(event) {
-    if (selBlockBB === false && selBlockWW === false && selBlock_rR === false && selBlockRr === false) {
+    if (selected == null) {
         return;
     }
     if (event.target.id.split("-")[1] === hoehe - 1) {
@@ -158,22 +153,22 @@ function handleCellClick(event) {
         return;
     }
 
-    if (selBlockBB === true) {
+    if (selected === blauBB) {
         cell.innerHTML = "B";
         cellBelow.innerHTML = "B";
         cell.style.backgroundImage = "url('image/blauB.jpg')";
         cellBelow.style.backgroundImage = "url('image/blauB.jpg')";
-    } else if (selBlockWW === true) {
+    } else if (selected === weissWW) {
         cell.innerHTML = "W";
         cellBelow.innerHTML = "W";
         cell.style.backgroundImage = "url('image/weissW.jpg')";
         cellBelow.style.backgroundImage = "url('image/weissW.jpg')";
-    } else if (selBlock_rR === true) {
+    } else if (selected === rot_rR) {
         cell.innerHTML = "r";
         cellBelow.innerHTML = "R";
         cell.style.backgroundImage = "url('image/rot_r.jpg')";
         cellBelow.style.backgroundImage = "url('image/rotR.jpg')";
-    } else if (selBlockRr === true) {
+    } else if (selected === rotRr) {
         cell.innerHTML = "R";
         cellBelow.innerHTML = "r";
         cell.style.backgroundImage = "url('image/rotR.jpg')";
@@ -182,6 +177,8 @@ function handleCellClick(event) {
         return;
     }
 
+    cellBelow.draggable = true;
+    cell.draggable = true;
     cellBelow.style.color = "rgba(15, 15, 15, 0.2)";
     cell.style.color = "rgba(15, 15, 15, 0.2)";
     calculateLight()
@@ -200,7 +197,7 @@ function calculateLight() {
     const lampenWerte = new Array(laenge);
     lampenWerte[0] = new Array(hoehe);
     for (let i = 0; i < hoehe; i++) {
-        lampenWerte[0][i] = document.getElementById(`cell-${i}-Lamp`).innerHTML === "an";
+        lampenWerte[0][i] = document.getElementById(`lamp-${i}`).classList.contains("on");
     }
     const bigArray = new Array(laenge);
     for (let i = 0; i < laenge; i++) {
