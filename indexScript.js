@@ -363,7 +363,7 @@ function calculateLight() {
     // Funktion zum Anzeigen der Lampenstatus
     for (let col = 0; col < laenge; col++) { // Schleife für jede Spalte
         for (let row = 0; row < hoehe; row++) { // Schleife für jedes Feld in der aktuellen Spalte
-            const cell = document.getElementById(`cell-${col}-${row}`) // Zugriff auf die Zelle in der aktuellen Spalte und der aktuellen Zeile, Indizes i wird um 1 verringert, da die erste Spalte, die Bausteine enthält, den Index 0 hat
+            const cell = document.getElementById(`cell-${col}-${row}`) // Zugriff auf die Zelle in der aktuellen Spalte und der aktuellen Zeile
             if (lampenWerte[col + 1][row]) { // Wenn der Lampenstatus in der aktuellen Zelle true ist, wird die Zelle gelb umrandet
                 cell.style.border = "3px solid yellow";
             } else { // Wenn der Lampenstatus in der aktuellen Zelle false ist, wird die Zelle schwarz umrandet
