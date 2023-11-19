@@ -1,4 +1,13 @@
 /* indexStyle.css */
+* {
+    font-family: 'Roboto', sans-serif; 
+    text-align: justify;
+  }
+p {
+    font-size: 2vh;
+    line-height: 3vh;
+}
+
 #rotRr {
     height: 100px;
     width: 50px;
@@ -48,7 +57,9 @@
 
 .cell {
     border: 1px solid black;
-    box-sizing: border-box; /* Ensure the border is included in the height */
+    box-sizing: border-box;
+    background-image: none;
+    background-color: none;
     background-size: cover;
 }
 

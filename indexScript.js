@@ -72,7 +72,7 @@ function createPlayground() {
         for (let j = -1; j < laenge; j++) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
-            cell.id = `cell-${j}-${i}`; // Unique ID based on position
+            cell.id = `cell-${j}-${i}`;
             cell.style.width = cellSize;
             cell.style.height = cellSize;
             cell.innerHTML = "X"
@@ -107,10 +107,15 @@ function createPlayground() {
     calculateLight();
 }
 
+let cellImageUrl;
+let cellBelowImageUrl;
+
 function handleCellHover(event) {
     const cell = event.target;
     const [rowIndex, colIndex] = cell.id.split("-").slice(1).map(Number);
     const cellBelow = document.getElementById(`cell-${rowIndex}-${colIndex + 1}`);
+    cellImageUrl = cell.style.backgroundImage;
+    cellBelowImageUrl = cellBelow.style.backgroundImage;
     if (selBlockBB == false && selBlockWW == false && selBlock_rR == false && selBlockRr == false) {
         return;
     }
@@ -121,17 +126,26 @@ function handleCellHover(event) {
         return;
     }
     cell.style.backgroundColor = "lightgreen";
-    cellBelow.style.backgroundColor = "lightgreen";
+    cell.style.backgroundImage = "";
+    if (cellBelow) {
+        cellBelow.style.backgroundColor = "lightgreen";
+        cellBelow.style.backgroundImage = "";
+    }
 }
 
 function handleCellMouseOut(event) {
     const cell = event.target;
     cell.style.backgroundColor = "";
+    cell.style.backgroundImage = cellImageUrl;
+    cellImageUrl = "";
     const [rowIndex, colIndex] = cell.id.split("-").slice(1).map(Number);
     const cellBelow = document.getElementById(`cell-${rowIndex}-${colIndex + 1}`);
     if (cellBelow) {
         cellBelow.style.backgroundColor = "";
+        cellBelow.style.backgroundImage = cellBelowImageUrl;
+        cellBelowImageUrl = "";
     }
+
 }
 
 function handleCellClick(event) {
@@ -169,7 +183,8 @@ function handleCellClick(event) {
     } else {
         return;
     }
-
+    cellImageUrl = cell.style.backgroundImage;
+    cellBelowImageUrl = cellBelow.style.backgroundImage;
     cell.style.color = "rgba(222, 222, 222, 0.1)";
     cellBelow.style.color = "rgba(222, 222, 222, 0.1)";
     calculateLight()
