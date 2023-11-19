@@ -45,6 +45,8 @@
 #playground {
     position: relative;
     left: 10vw;
+    width: min(0.8vw, 0.8vh);
+    height: min(0.8vw, 0.8vh);
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 0; /* No gap between cells */
