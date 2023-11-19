@@ -7,32 +7,41 @@
     <link rel="stylesheet" href="indexStyle.css">
 </head>
 <body>
-    <h1>Nandu</h1>
-    <p>Gebe die gewünschte Länge und Höhe des Spielfelds in die Eingabefelder und drücke anschliessend auf die "Erstelle das Spielfeld" Schaltfläche.
-    <br>Um einen Baustein zu platzieren, klicke auf den gewünschten Baustein, der ausgesuchte Baustein hat eine hellgrüne Umrahmung. Gehe anschließend mit der Maus über das Spielfeld, dabei wird ein hellgrüner Schatten auf den Feldern, auf die der ausgesuchte Baustein platziert wird, sobald man die Maus klickt. Du kannst nicht auf bereits besetzte Felder Bausteine platzieren oder Bausteine außerhalb des Spielfelds platzieren.
-    <br>In der ersten Spalten sind bereits Lampen angebracht, die man durch Klicken an- und ausschalten kann.
-    <br>Die Reaktion der LEDs wird in Echtzeit angezeigt.
-    <br>Um die das Spielfeld mit seinen Konstruktionen zurückzusetzen, drücke auf die "Setze das Spielfeld zurück" Schaltfläche. Du kannst jederzeit ein neues Spielfeld erzeugen, indem du die Länge und Höhe des Spielfelds in die Eingabefelder eingibst und auf die "Erstelle das Spielfeld" Schaltfläche drückst.
-    </p>
-    <!-- Eingabefelder und Schaltflächen -->
-    <input type="number" id="laenge" placeholder="Länge">
-    <input type="number" id="hoehe" placeholder="Höhe">
-    <button id="button">Erstelle das Spielfeld</button>
-    <button id="clear">Setze das Spielfeld zurück</button>
-    
-    <!-- Bausteine zur Auswahl -->
-    <div id="bausteine">
-        <div id="rotRr" class="stein"></div>
-        <div id="rot_rR" class="stein"></div>
-        <div id="blauBB" class="stein"></div>
-        <div id="weissWW" class="stein"></div>
-    </div>
-    
-    <!-- Spielfeldcontainer -->
-    <div id="playground"></div>
-    
-    <!-- JavaScript-Dateien einbinden -->
-    <script src="algorithmus.js"></script>
-    <script src="indexScript.js"></script>
+<h1>Nandu</h1>
+<h4>Eine interaktive Simulation kann folgendermaßen gestartet werden:</h4>
+<ol>
+    <li>Geben Sie die gewünschten Dimensionen des Spielfelds in die Eingabefelder unten ein.</li>
+    <li>Drücken Sie anschließend auf den Knopf "Spielfeld erstellen".</li>
+    <li>Um einen Baustein zu platzieren, wählen Sie zuerst die Art des Bausteins aus. Dieser wird dann farblich
+        hervorgehoben. Wählen Sie nun ein Feld aus, auf dem der Baustein platziert werden soll. Beim Bewegen der Maus
+        können Sie durch einen grünen Hintergrund sehen, wo der Baustein mit aktueller Mausposition platziert werden
+        würde. Mit einem Klick der linken Maustaste wird der Baustein dann platziert, sofern die Position gültig ist.
+    </li>
+    <li>Alle Eingabelichter können mit Mausklicks während der Simulationen ein- und ausgeschaltet werden. Die Zustände
+        der Konstruktion werden völlig automatisch aktualisiert.
+    </li>
+    <li>Um das Feld zu leeren, betätigen Sie den Knopf "Spielfeld zurücksetzen"</li>
+    <li>Viel Spaß beim Testen! :)</li>
+</ol>
+<!-- Eingabefelder und Schaltflächen -->
+<input type="number" id="laenge" placeholder="Länge">
+<input type="number" id="hoehe" placeholder="Höhe">
+<button id="button">Spielfeld erstellen</button>
+<button id="clear">Spielfeld zurücksetzen</button>
+
+<!-- Bausteine zur Auswahl -->
+<div id="bausteine">
+    <div id="rotRr" class="stein"></div>
+    <div id="rot_rR" class="stein"></div>
+    <div id="blauBB" class="stein"></div>
+    <div id="weissWW" class="stein"></div>
+</div>
+
+<!-- Spielfeldcontainer -->
+<div id="playground"></div>
+
+<!-- JavaScript-Dateien einbinden -->
+<script src="algorithmus.js"></script>
+<script src="indexScript.js"></script>
 </body>
 </html>

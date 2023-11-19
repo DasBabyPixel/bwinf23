@@ -47,6 +47,11 @@ setInputFilter(inputHoehe, function (value) {
 
 // Event-Listener für den "Erstelle das Spielfeld" Button
 createButton.addEventListener("click", () => {
+    if (laenge) { // Falls es bereits ein Spielfeld gibt, muss das Erstellen eines neuen Spielfeldes bestätigt werden
+        if(!confirm("Bist du dir sicher, dass du ein neues Spielfeld erstellen möchtest?")) {
+            return;
+        }
+    }
     // Die eingegebenen Werte für Länge und Höhe werden in Ganzzahlen umgewandelt.
     laenge = parseInt(inputLaenge.value);
     hoehe = parseInt(inputHoehe.value);
