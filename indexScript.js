@@ -14,7 +14,7 @@ function setInputFilter(textbox, inputFilter, errMsg) {
     ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop", "focusout"].forEach(function (event) {
         textbox.addEventListener(event, function (e) {
             if (inputFilter(this.value)) {
-                // Accepted value
+                // Der Wert ist gültig
                 if (["keydown", "mousedown", "focusout"].indexOf(e.type) >= 0) {
                     this.classList.remove("input-error");
                     this.setCustomValidity("");
@@ -23,20 +23,21 @@ function setInputFilter(textbox, inputFilter, errMsg) {
                 this.oldSelectionStart = this.selectionStart;
                 this.oldSelectionEnd = this.selectionEnd;
             } else if (this.hasOwnProperty("oldValue")) {
-                // Rejected value - restore the previous one
+                // Der Wert wurde abgelehnt. Den letzten Wert wiederherstellen
                 this.classList.add("input-error");
                 this.setCustomValidity(errMsg);
                 this.reportValidity();
                 this.value = this.oldValue;
                 this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
             } else {
-                // Rejected value - nothing to restore
+                // Der Wert wurde abgelehnt. Es gibt keinen wiederherstellbaren Wert
                 this.value = "";
             }
         });
     });
 }
 
+// Filter um nur positive ganze Zahlen zuzulassen
 setInputFilter(inputLaenge, function (value) {
     return /^\d*$/.test(value) && parseInt(value) > 0
 }, "Muss eine Positive Zahl sein")
@@ -73,7 +74,7 @@ function selectEvent(event) {
     select(event.target)
 }
 
-// Funktion zum auswählen eines Bausteins
+// Funktion zum Auswählen eines Bausteins
 function select(blockType) {
     selected = blockType
     makeBorderGreen(selected)
@@ -199,13 +200,17 @@ function handleCellMouseOut(event) {
     const cell = event.target;
     // Die Hintergrundbilder werden wiederhergestellt und die Hintergrundfarbe wird entfernt
     cell.style.backgroundColor = "";
-    cell.style.backgroundImage = cellImageUrl;
-    cellImageUrl = "";
+    if (cellImageUrl) {
+        cell.style.backgroundImage = cellImageUrl;
+        cellImageUrl = null;
+    }
     const cellBelow = findCellBelow(cell)
     if (cellBelow) {
         cellBelow.style.backgroundColor = "";
-        cellBelow.style.backgroundImage = cellBelowImageUrl;
-        cellBelowImageUrl = "";
+        if (cellBelowImageUrl) {
+            cellBelow.style.backgroundImage = cellBelowImageUrl;
+            cellBelowImageUrl = null;
+        }
     }
     if (cell.style.borderColor === "lightgreen") {
         // Der Baustein wurde markiert. Dann wurde die Lichtanzeige überschrieben.
@@ -245,6 +250,8 @@ function deleteBlock(cell) {
     find.bottom.innerHTML = "X"
     find.top.style.backgroundImage = ""
     find.bottom.style.backgroundImage = ""
+    cellImageUrl = null
+    cellBelowImageUrl = null
     calculateLight() // Neuberechnen des Lichts nach Löschvorgang
 }
 
@@ -314,21 +321,21 @@ const clear = document.getElementById("clear");
 // Event-Listener für den Clear-Button, um das Spielfeld zu löschen
 clear.addEventListener("click", () => {
     // Bestätigungsdialog vor dem Löschen des Spielfelds
-    if (confirm("Willst du wirklich alles löschen?") === true) {
+    if (confirm("Willst du wirklich alles löschen?")) {
         createPlayground(); // Das Spielfeld wird neu erstellt
     }
 });
 
 // Funktion zum Berechnen des Licht-Wegs
 function calculateLight() {
-    // Erstellen und Initialisieren eines zweidimensionalen Arrays für die Lampenstatus in jeder Spalte, jedes Element ist wiedrum ein eigenes Array für die Lampenstatus in jeder Zeile
+    // Erstellen und Initialisieren eines zweidimensionalen Arrays für die Lampenstatus in jeder Spalte, jedes Element ist wiederum ein eigenes Array für die Lampenstatus in jeder Zeile
     const lampenWerte = new Array(laenge + 1); // +1, da es eine zusätzliche erste Spalte mit Lampen gibt
-    // Der Lampenstatus in der ersten Spalte werden aus den HTML-Elementen ausgelesen und in das Array gespeichert
+    // der Lampenstatus in der ersten Spalte werden aus den HTML-Elementen ausgelesen und in das Array gespeichert
     lampenWerte[0] = new Array(hoehe);
     for (let i = 0; i < hoehe; i++) {
         lampenWerte[0][i] = document.getElementById(`lamp-${i}`).classList.contains("on");
     }
-    // Erstellen und Initialisieren eines zweidimensionalen Arrays für die Bausteinstatus in jeder Spalte, jedes Element ist wiedrum ein eigenes Array für die Bausteinstatus in jeder Zeile
+    // Erstellen und Initialisieren eines zweidimensionalen Arrays für die Bausteinstatus in jeder Spalte, jedes Element ist wiederum ein eigenes Array für die Bausteinstatus in jeder Zeile
     const bigArray = new Array(laenge);
     for (let col = 0; col < laenge; col++) { // Schleife für jede Spalte
         bigArray[col] = new Array(hoehe); // Erstellen eines Arrays für die aktuelle Spalte
