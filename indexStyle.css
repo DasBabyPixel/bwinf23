@@ -1,4 +1,3 @@
-/* indexStyle.css */
 * {
     font-family: 'Roboto', sans-serif; 
     text-align: justify;
@@ -8,6 +7,7 @@ p {
     line-height: 3vh;
 }
 
+/* Stil für jeden Baustein */
 #rotRr {
     height: 100px;
     width: 50px;
@@ -39,22 +39,24 @@ p {
 .stein {
     margin: 5px;
 }
+
 #bausteine {
     display: flex;
     flex-wrap: wrap;
 }
-/* indexStyle.css */
 
+/* Stil für das Spielfeld */
 #playground {
     display: grid;
     grid-template-columns: repeat(var(--laenge), 1fr);
-    gap: 0; /* No gap between cells */
+    gap: 0;
 }
 
 .row {
     display: flex;
 }
 
+/* Stil für jedes Feld im Spielfeld */
 .cell {
     border: 1px solid black;
     box-sizing: border-box;
@@ -62,4 +64,3 @@ p {
     background-color: none;
     background-size: cover;
 }
-

@@ -1,3 +1,4 @@
+// Dieser Code ist einfach aus den urprünglichen Java-Dateien übersetzt worden.
 class Spalte {
     constructor(breite, segmente) {
         this.breite = breite;

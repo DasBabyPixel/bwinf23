@@ -14,18 +14,24 @@
     <br>Die Reaktion der LEDs wird in Echtzeit angezeigt.
     <br>Um die das Spielfeld mit seinen Konstruktionen zurückzusetzen, drücke auf die "Setze das Spielfeld zurück" Schaltfläche. Du kannst jederzeit ein neues Spielfeld erzeugen, indem du die Länge und Höhe des Spielfelds in die Eingabefelder eingibst und auf die "Erstelle das Spielfeld" Schaltfläche drückst.
     </p>
+    <!-- Eingabefelder und Schaltflächen -->
     <input type="number" id="laenge" placeholder="Länge">
     <input type="number" id="hoehe" placeholder="Höhe">
     <button id="button">Erstelle das Spielfeld</button>
     <button id="clear">Setze das Spielfeld zurueck</button>
+    
+    <!-- Bausteine zur Auswahl -->
     <div id="bausteine">
         <div id="rotRr" class="stein"></div>
         <div id="rot_rR" class="stein"></div>
         <div id="blauBB" class="stein"></div>
         <div id="weissWW" class="stein"></div>
     </div>
+    
+    <!-- Spielfeldcontainer -->
     <div id="playground"></div>
-
+    
+    <!-- JavaScript-Dateien einbinden -->
     <script src="algorithmus.js"></script>
     <script src="indexScript.js"></script>
 </body>
