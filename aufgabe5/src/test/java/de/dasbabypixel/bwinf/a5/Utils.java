@@ -35,7 +35,7 @@ public class Utils {
                     System.err.println("Can't check if output is correct: " + entry.expected());
                     return;
                 }
-                var expected = Tourpoint.load(outputReader);
+                var expected = Tourpunkt.load(outputReader);
                 if (!expected.equals(output)) {
                     System.err.println(Path.of(entry.input().toURI()).getFileName());
                     System.err.printf("Expected(%s) not matching output(%s)%n", expected.size(), output.size());

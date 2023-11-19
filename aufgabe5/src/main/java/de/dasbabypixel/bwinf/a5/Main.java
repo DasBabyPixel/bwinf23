@@ -29,15 +29,15 @@ public class Main {
     /**
      * Berechnet eine gekürzte Tour
      */
-    public List<Tourpoint> work(BufferedReader reader) throws IOException {
+    public List<Tourpunkt> work(BufferedReader reader) throws IOException {
         // Die lange Version der Tour zunächst laden
-        var tour = Tourpoint.load(reader);
+        var tour = Tourpunkt.load(reader);
         // Alle möglichen Start-End Kombinationen berechnen
         var startEntries = collectStartEntries(tour);
         // Einen Graph für die Tour erstellen, der alle möglichen Verbindungen enthält.
         var graph = new TourGraph(tour);
 
-        List<Tourpoint> bestTour = null;
+        List<Tourpunkt> bestTour = null;
         // Die Strategie ist hier für jede Start-End Kombination den Dijkstra-Algorithmus anzuwenden. Dann wird aus allen Ergebnissen die beste Tour gewählt.
         for (var entry : startEntries) {
             // Dijkstra auf die Start-End Kombination anwenden.
@@ -66,7 +66,7 @@ public class Main {
     /**
      * Berechnet die gekürzte Tour mit einer Datei {@code path} als Input
      */
-    public List<Tourpoint> work(Path path) throws IOException {
+    public List<Tourpunkt> work(Path path) throws IOException {
         try (var reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             return work(reader);
         }
@@ -76,15 +76,15 @@ public class Main {
      * Diese Methode berechnet alle möglichen Start-End Kombinationen der Tour.
      * Dies ist möglich, da der Startpunkt der Tour versetzt werden darf.
      */
-    private List<StartEntry> collectStartEntries(List<Tourpoint> tour) {
-        var beginning = new ArrayList<Tourpoint>();
+    private List<StartEntry> collectStartEntries(List<Tourpunkt> tour) {
+        var beginning = new ArrayList<Tourpunkt>();
         // Zunächst alle Tour Stops vor dem ersten wichtigen sammeln, einschließlich des ersten wichtigen.
         for (var tourpunkt : tour) {
             beginning.add(tourpunkt);
             if (tourpunkt.important()) break;
         }
         // Dann alle nach dem letzten wichtigen, einschließlich des letzten wichtigen.
-        var end = new ArrayList<Tourpoint>();
+        var end = new ArrayList<Tourpunkt>();
         for (var i = tour.size() - 1; i >= 0; i--) { // For-Schleife rückwärts
             var tourpunkt = tour.get(i);
             end.add(tourpunkt);

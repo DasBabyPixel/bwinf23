@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 public class TourGraph {
-    private final Graph<Tourpoint, Integer> graph = Graph.linkedGraph();
-    private final Map<Tourpoint, Graph.Node<Tourpoint, Integer>> nodeMap = new HashMap<>();
+    private final Graph<Tourpunkt, Integer> graph = Graph.linkedGraph();
+    private final Map<Tourpunkt, Graph.Node<Tourpunkt, Integer>> nodeMap = new HashMap<>();
 
-    public TourGraph(List<Tourpoint> tour) {
-        Graph.Node<Tourpoint, Integer> last = null;
-        var pointsByName = new HashMap<String, List<Graph.Node<Tourpoint, Integer>>>();
+    public TourGraph(List<Tourpunkt> tour) {
+        Graph.Node<Tourpunkt, Integer> last = null;
+        var pointsByName = new HashMap<String, List<Graph.Node<Tourpunkt, Integer>>>();
         for (var tourpunkt : tour) {
             // Zunächst den Tourpunkt registrieren.
             var node = graph.newNode(tourpunkt);
@@ -39,16 +39,16 @@ public class TourGraph {
         }
     }
 
-    public List<Tourpoint> search(Tourpoint beginning, Tourpoint end) {
+    public List<Tourpunkt> search(Tourpunkt beginning, Tourpunkt end) {
         // Die Start- und Endpunkte im Graph laden.
         var bNode = nodeMap.get(beginning);
         var eNode = nodeMap.get(end);
         // Mithilfe des Dijkstra-Algorithmus den kürzesten Weg berechnen.
         var path = graph.search(Graph.Algorithm
-                .<Tourpoint, Integer>dijkstra()
+                .<Tourpunkt, Integer>dijkstra()
                 .withData(new Graph.Algorithm.DijkstraData<>(bNode, eNode, Graph.Node.Connection::way)));
         // Output vorbereiten.
-        var output = new ArrayList<Tourpoint>();
+        var output = new ArrayList<Tourpunkt>();
         // Länge der Strecke vorbereiten.
         int distanceToStart = 0;
         // "path" in das richtige Format konvertieren.
@@ -60,10 +60,10 @@ public class TourGraph {
             distanceToStart += distance;
             if (output.isEmpty()) {
                 // Der erste Punkt wurde noch nicht hinzugefügt, da wir Verbindungen und nicht Punkte iterieren.
-                output.add(new Tourpoint(from.data().location(), from.data().year(), from.data().important(), 0));
+                output.add(new Tourpunkt(from.data().location(), from.data().year(), from.data().important(), 0));
             }
             // Den "to"-Punkt hinzufügen
-            output.add(new Tourpoint(to.data().location(), to.data().year(), to.data().important(), distanceToStart));
+            output.add(new Tourpunkt(to.data().location(), to.data().year(), to.data().important(), distanceToStart));
         }
         return output;
     }

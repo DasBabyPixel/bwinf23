@@ -5,26 +5,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Tourpoint(String location, int year, boolean important, int distanceToStart) {
+public record Tourpunkt(String location, int year, boolean important, int distanceToStart) {
     /**
      * Diese Methode lädt ein Tourpunkt aus einer Zeile der Tour
      */
-    public static Tourpoint parse(String line) {
+    public static Tourpunkt parse(String line) {
         var split = line.split(",");
         var ort = split[0];
         var jahr = Integer.parseInt(split[1]);
         var essentiell = split[2].equals("X");
         var abstand = Integer.parseInt(split[3]);
-        return new Tourpoint(ort, jahr, essentiell, abstand);
+        return new Tourpunkt(ort, jahr, essentiell, abstand);
     }
 
     /**
      * Diese Methode lädt alle Tourpunkte aus einer Tour
      */
-    public static List<Tourpoint> load(BufferedReader reader) throws IOException {
+    public static List<Tourpunkt> load(BufferedReader reader) throws IOException {
         var lastYear = Integer.MIN_VALUE;
         var count = Integer.parseInt(reader.readLine());
-        var list = new ArrayList<Tourpoint>(count);
+        var list = new ArrayList<Tourpunkt>(count);
         for (int i = 0; i < count; i++) {
             var line = reader.readLine().trim(); // Leerzeichen am Anfang und Ende der Zeile ignorieren
             if (line.isBlank()) { // Ein wenig toleranz für leere Zeilen. Diese werden ignoriert.
