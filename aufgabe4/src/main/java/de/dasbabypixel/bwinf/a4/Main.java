@@ -6,8 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -17,7 +15,7 @@ public class Main {
             return;
         }
 
-        var path = Path.of(args[0], Arrays.copyOfRange(args, 1, args.length));
+        var path = Path.of(String.join(" ", args));
         if (!Files.exists(path)) {
             System.err.println("Die Datei " + path.toAbsolutePath().normalize() + " existiert nicht");
             return;

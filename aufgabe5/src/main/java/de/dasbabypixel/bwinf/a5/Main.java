@@ -2,6 +2,7 @@ package de.dasbabypixel.bwinf.a5;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ public class Main {
             return;
         }
 
-        var path = Path.of(args[0], Arrays.copyOfRange(args, 1, args.length));
+        var path = Path.of(String.join(" ", args));
         if (!Files.exists(path)) {
             System.err.println("Die Datei " + path.toAbsolutePath().normalize() + " existiert nicht");
             return;

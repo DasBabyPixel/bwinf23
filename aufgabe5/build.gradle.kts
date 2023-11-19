@@ -21,6 +21,13 @@ tasks {
     shadowJar {
         archiveClassifier = null
     }
+    register<Copy>("copyAufgabe5ToAbgabe") {
+        mustRunAfter(shadowJar.get())
+        from(shadowJar)
+        val launcher = project.javaToolchains.launcherFor(java.toolchain).get();
+        from(launcher.metadata.installationPath) { into("jre") }
+        into(file("abgabe"))
+    }
     assemble {
         dependsOn(shadowJar)
     }
