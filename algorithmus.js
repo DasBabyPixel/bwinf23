@@ -1,4 +1,4 @@
-// Dieser Code ist einfach aus den urprünglichen Java-Dateien übersetzt worden.
+// Dieser Code ist einfach aus den ursprünglichen Java-Dateien übersetzt worden.
 class Spalte {
     constructor(breite, segmente) {
         this.breite = breite;

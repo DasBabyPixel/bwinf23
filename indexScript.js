@@ -139,7 +139,7 @@ function handleCellHover(event) {
 
     // Überprüfung, ob ein Baustein ausgewählt wurde und ob es die unterste Reihe betrifft    
     if (selBlockBB == false && selBlockWW == false && selBlock_rR == false && selBlockRr == false) {
-        return; // Wenn kein  Baustein ausgewählt wurde, wird die Funktion beendet, also passiert nichts
+        return; // Wenn kein Baustein ausgewählt wurde, wird die Funktion beendet, also passiert nichts
     }
     if (event.target.id.split("-")[2] == hoehe - 1) {
         return; // Wenn die unterste Reihe betroffen ist, wird die Funktion beendet, da dort keine Bausteine platziert werden können
