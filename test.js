@@ -91,10 +91,3 @@ const BausteinSegmentEnum = {
     B: new BausteinSegment("B"),
     X: new BausteinSegment("X")
 };
-
-let spalte = new Spalte(2, [BausteinSegmentEnum.R, BausteinSegmentEnum.r]);
-console.log(spalte)
-
-let output = spalte.apply([false, false]);
-
-console.log(output);

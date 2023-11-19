@@ -2,21 +2,18 @@
 
 const inputLaenge = document.getElementById("laenge");
 const inputHoehe = document.getElementById("hoehe");
-const button = document.getElementById("button");
+const createButton = document.getElementById("button");
 const blauBB = document.getElementById("blauBB");
 const weissWW = document.getElementById("weissWW");
 const rot_rR = document.getElementById("rot_rR");
 const rotRr = document.getElementById("rotRr");
-let laenge;
+let laenge
 let hoehe;
 
-button.addEventListener("click", () => {
-    laenge = inputLaenge.value;
-    hoehe = inputHoehe.value;
-    laenger = parseInt(laenge);
-    sven = parseInt(laenge);
-    sven++
-    console.log(sven);
+createButton.addEventListener("click", () => {
+    laenge = parseInt(inputLaenge.value);
+    hoehe = parseInt(inputHoehe.value);
+    console.log("Länge: " + laenge + ", Höhe: " + hoehe)
     createPlayground();
 });
 
@@ -65,25 +62,18 @@ rotRr.addEventListener("click", () => {
     makeBorderGreen(rotRr);
 });
 
-
-
-let laenger
-
-let sven
-
-
 function createPlayground() {
-
     const playground = document.getElementById("playground");
     playground.innerHTML = ""; // Clear previous content
-    const cellSize = `${100/(laenger)}vw`;
+
+    const cellSize = `${80 / laenge}vw`;
 
 
     for (let i = 0; i < hoehe; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
 
-        for (let j = -1; j < laenger; j++) {
+        for (let j = -1; j < laenge; j++) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
             cell.id = `cell-${i}-${j}`; // Unique ID based on position
@@ -97,7 +87,7 @@ function createPlayground() {
             cell.addEventListener("click", handleCellClick);
             row.appendChild(cell);
             // set first column to Lamps
-            if (j == -1) {
+            if (j === -1) {
                 cell.innerHTML = "aus";
                 cell.style.color = "rgba(15, 15, 15, 0.2)";
                 cell.id = `cell-${i}-Lamp`;
@@ -106,13 +96,14 @@ function createPlayground() {
                 cell.removeEventListener("mouseout", handleCellMouseOut);
                 cell.removeEventListener("click", handleCellClick);
                 cell.addEventListener("click", () => {
-                    if (cell.innerHTML == "an") {
+                    if (cell.innerHTML === "an") {
                         cell.innerHTML = "aus";
                         cell.style.backgroundImage = "url('image/lampeAus.jpg')";
                     } else {
                         cell.innerHTML = "an";
                         cell.style.backgroundImage = "url('image/lampeAn.jpg')";
                     }
+                    calculateLight()
                 });
             }
         }
@@ -121,10 +112,10 @@ function createPlayground() {
 }
 
 function handleCellHover(event) {
-    if (selBlockBB == false && selBlockWW == false && selBlock_rR == false && selBlockRr == false) {
+    if (selBlockBB === false && selBlockWW === false && selBlock_rR === false && selBlockRr === false) {
         return;
     }
-    if (event.target.id.split("-")[1] == hoehe - 1) {
+    if (event.target.id.split("-")[1] === hoehe - 1) {
         return;
     }
 
@@ -132,7 +123,7 @@ function handleCellHover(event) {
     const [rowIndex, colIndex] = hoveredCell.id.split("-").slice(1).map(Number);
     const cellBelow = document.getElementById(`cell-${rowIndex + 1}-${colIndex}`);
 
-    if (hoveredCell.innerHTML != "X" || cellBelow.innerHTML != "X") {
+    if (hoveredCell.innerHTML !== "X" || cellBelow.innerHTML !== "X") {
         return;
     }
     hoveredCell.style.backgroundColor = "lightgreen";
@@ -158,34 +149,31 @@ function handleCellClick(event) {
     const cell = event.target;
     const [rowIndex, colIndex] = cell.id.split("-").slice(1).map(Number);
     const cellBelow = document.getElementById(`cell-${rowIndex + 1}-${colIndex}`);
-    
+
     // if cell is on the bottom row, alert the user, that he can't click on it
-    if (event.target.id.split("-")[1] == hoehe - 1) {
+    if (event.target.id.split("-")[1] === hoehe - 1) {
         return;
     }
-    if (cell.innerHTML != "X" || cellBelow.innerHTML != "X") {
+    if (cell.innerHTML !== "X" || cellBelow.innerHTML !== "X") {
         return;
     }
 
-    if (selBlockBB == true) {
+    if (selBlockBB === true) {
         cell.innerHTML = "B";
         cellBelow.innerHTML = "B";
         cell.style.backgroundImage = "url('image/blauB.jpg')";
         cellBelow.style.backgroundImage = "url('image/blauB.jpg')";
-    }
-    if (selBlockWW == true) {
+    } else if (selBlockWW === true) {
         cell.innerHTML = "W";
         cellBelow.innerHTML = "W";
         cell.style.backgroundImage = "url('image/weissW.jpg')";
         cellBelow.style.backgroundImage = "url('image/weissW.jpg')";
-    }
-    if (selBlock_rR == true) {
+    } else if (selBlock_rR === true) {
         cell.innerHTML = "r";
         cellBelow.innerHTML = "R";
         cell.style.backgroundImage = "url('image/rot_r.jpg')";
         cellBelow.style.backgroundImage = "url('image/rotR.jpg')";
-    }
-    if (selBlockRr == true) {
+    } else if (selBlockRr === true) {
         cell.innerHTML = "R";
         cellBelow.innerHTML = "r";
         cell.style.backgroundImage = "url('image/rotR.jpg')";
@@ -196,66 +184,57 @@ function handleCellClick(event) {
 
     cellBelow.style.color = "rgba(15, 15, 15, 0.2)";
     cell.style.color = "rgba(15, 15, 15, 0.2)";
-
+    calculateLight()
 }
 
 
 const clear = document.getElementById("delete");
 
 clear.addEventListener("click", () => {
-    if (confirm("Willst du wirklich alles löschen?")==true) {
+    if (confirm("Willst du wirklich alles löschen?") === true) {
         createPlayground();
     }
 });
 
-document.getElementById("los").addEventListener("click", () => {
-    const booleanArray = new Array(sven);
-    console.log(booleanArray.length);
-    booleanArray[0] = new Array(hoehe);
+function calculateLight() {
+    const lampenWerte = new Array(laenge);
+    lampenWerte[0] = new Array(hoehe);
     for (let i = 0; i < hoehe; i++) {
-        if (document.getElementById(`cell-${i}-Lamp`).innerHTML=="an") {
-            booleanArray[0][i] = true;
-        } else {
-            booleanArray[0][i] = false;
-        }
+        lampenWerte[0][i] = document.getElementById(`cell-${i}-Lamp`).innerHTML === "an";
     }
-    const bigArray = new Array(laenger);
-    for (let i = 0; i < laenger; i++) {
+    const bigArray = new Array(laenge);
+    for (let i = 0; i < laenge; i++) {
         bigArray[i] = new Array(hoehe);
         for (let j = 0; j < hoehe; j++) {
             // bigArray[i][j] = document.getElementById(`cell-${j}-${i}`).innerHTML;
-            if (document.getElementById(`cell-${j}-${i}`).innerHTML=="B") {
+            if (document.getElementById(`cell-${j}-${i}`).innerHTML === "B") {
                 bigArray[i][j] = BausteinSegmentEnum.B;
-            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="W") {
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML === "W") {
                 bigArray[i][j] = BausteinSegmentEnum.W;
-            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="r") {
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML === "r") {
                 bigArray[i][j] = BausteinSegmentEnum.r;
-            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="R") {
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML === "R") {
                 bigArray[i][j] = BausteinSegmentEnum.R;
-            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML=="X") {
+            } else if (document.getElementById(`cell-${j}-${i}`).innerHTML === "X") {
                 bigArray[i][j] = BausteinSegmentEnum.X;
             }
         }
     }
-    console.log(booleanArray);
-    console.log(bigArray);
-    for (let i = 1; i < booleanArray.length; i++) {
-        let hehe = new Spalte(hoehe, bigArray[i-1]);
-        console.log('hehe'+i);
-        console.log(hehe);
-        console.log('HEHEAPPLY'+i)
-        console.log(hehe.apply(booleanArray[i-1]));
-        console.log("inserting..");
-        booleanArray[i] = hehe.apply(booleanArray[i-1]);
+    for (let i = 1; i < lampenWerte.length; i++) {
+        let hehe = new Spalte(hoehe, bigArray[i - 1]);
+        lampenWerte[i] = hehe.apply(lampenWerte[i - 1]);
     }
-    console.log(booleanArray);
-    for (let i=1; i<laenger; i++) {
-        for (let j=0; j<hoehe; j++) {
-            if (booleanArray[i][j]==true) {
+    for (let i = 1; i < laenge; i++) {
+        for (let j = 0; j < hoehe; j++) {
+            const element = document.getElementById(`cell-${j}-${i - 1}`)
+            if (lampenWerte[i][j] === true) {
                 //make cell border yellow
-                document.getElementById(`cell-${j}-${i-1}`).style.border = "3px solid yellow";
+                element.style.border = "3px solid yellow";
+            } else {
+                element.style.border = "1px solid black"
             }
         }
     }
-});
+}
+
 
