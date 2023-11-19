@@ -341,15 +341,16 @@ function calculateLight() {
         bigArray[col] = new Array(hoehe); // Erstellen eines Arrays für die aktuelle Spalte
         for (let row = 0; row < hoehe; row++) { // Schleife für jedes Feld in der aktuellen Spalte
             // Auslesen der Bausteinstatus aus den HTML-Elementen und Speichern in das Array
-            if (document.getElementById(`cell-${col}-${row}`).innerHTML === "B") {
+            const state = document.getElementById(`cell-${col}-${row}`).innerHTML
+            if (state === "B") {
                 bigArray[col][row] = BausteinSegmentEnum.B;
-            } else if (document.getElementById(`cell-${col}-${row}`).innerHTML === "W") {
+            } else if (state === "W") {
                 bigArray[col][row] = BausteinSegmentEnum.W;
-            } else if (document.getElementById(`cell-${col}-${row}`).innerHTML === "r") {
+            } else if (state === "r") {
                 bigArray[col][row] = BausteinSegmentEnum.r;
-            } else if (document.getElementById(`cell-${col}-${row}`).innerHTML === "R") {
+            } else if (state === "R") {
                 bigArray[col][row] = BausteinSegmentEnum.R;
-            } else if (document.getElementById(`cell-${col}-${row}`).innerHTML === "X") {
+            } else if (state === "X") {
                 bigArray[col][row] = BausteinSegmentEnum.X;
             }
         }
@@ -360,19 +361,21 @@ function calculateLight() {
         lampenWerte[i] = output.apply(lampenWerte[i - 1]); // Anwenden der Funktion apply aus der Klasse Spalte auf die aktuelle Spalte, sodass die Lampenstatus in der aktuellen Spalte berechnet werden und in das Array gespeichert werden
     }
     // Funktion zum Anzeigen der Lampenstatus
-    for (let i = 1; i < laenge; i++) { // Schleife für jede Spalte, beginnend bei der zweiten Spalte, da in der ersten Spalte Lampen sind
-        for (let j = 0; j < hoehe; j++) { // Schleife für jedes Feld in der aktuellen Spalte
-            const cell = document.getElementById(`cell-${i - 1}-${j}`) // Zugriff auf die Zelle in der aktuellen Spalte und der aktuellen Zeile, Indizes i wird um 1 verringert, da die erste Spalte, die Bausteine enthält, den Index 0 hat
-            if (lampenWerte[i][j]) { // Wenn der Lampenstatus in der aktuellen Zelle true ist, wird die Zelle gelb umrandet
+    for (let col = 0; col < laenge; col++) { // Schleife für jede Spalte
+        for (let row = 0; row < hoehe; row++) { // Schleife für jedes Feld in der aktuellen Spalte
+            const cell = document.getElementById(`cell-${col}-${row}`) // Zugriff auf die Zelle in der aktuellen Spalte und der aktuellen Zeile, Indizes i wird um 1 verringert, da die erste Spalte, die Bausteine enthält, den Index 0 hat
+            if (lampenWerte[col + 1][row]) { // Wenn der Lampenstatus in der aktuellen Zelle true ist, wird die Zelle gelb umrandet
                 cell.style.border = "3px solid yellow";
             } else { // Wenn der Lampenstatus in der aktuellen Zelle false ist, wird die Zelle schwarz umrandet
                 cell.style.border = "1px solid black"
             }
-            const nextCell = document.getElementById(`cell-${i}-${j}`) // Zugriff auf die Zelle in der nächsten Spalte und der aktuellen Zeile
-            if (lampenWerte[i][j] === true && nextCell.innerHTML === "X") { // Wenn der Lampenstatus in der aktuellen Zelle true ist und die Zelle in der nächsten Spalte leer ist, wird die Zelle in der nächsten Spalte mit einem Hintergrundbild eines austretenden Lichts befüllt
-                nextCell.style.backgroundImage = "url('image/licht.jpg')";
-            } else if (lampenWerte[i][j] !== true && nextCell.innerHTML === "X") { // Wenn der Lampenstatus in der aktuellen Zelle false ist und die Zelle in der nächsten Spalte leer ist, wird das Hintergrundbild der Zelle in der nächsten Spalte entfernt
-                nextCell.style.backgroundImage = "";
+            const nextCell = document.getElementById(`cell-${col + 1}-${row}`) // Zugriff auf die Zelle in der nächsten Spalte und der aktuellen Zeile
+            if (nextCell) {
+                if (lampenWerte[col + 1][row] === true && nextCell.innerHTML === "X") { // Wenn der Lampenstatus in der aktuellen Zelle true ist und die Zelle in der nächsten Spalte leer ist, wird die Zelle in der nächsten Spalte mit einem Hintergrundbild eines austretenden Lichts befüllt
+                    nextCell.style.backgroundImage = "url('image/licht.jpg')";
+                } else if (lampenWerte[col + 1][row] !== true && nextCell.innerHTML === "X") { // Wenn der Lampenstatus in der aktuellen Zelle false ist und die Zelle in der nächsten Spalte leer ist, wird das Hintergrundbild der Zelle in der nächsten Spalte entfernt
+                    nextCell.style.backgroundImage = "";
+                }
             }
         }
     }
