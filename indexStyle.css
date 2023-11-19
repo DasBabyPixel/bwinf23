@@ -1,7 +1,6 @@
 * {
     font-family: 'Roboto', sans-serif;
     text-align: justify;
-    user-select: none;
 }
 
 p {
@@ -68,6 +67,7 @@ p {
     box-sizing: border-box;
     background-image: none;
     background-size: cover;
+    user-select: none;
 }
 
 /* Stil für Lampen */

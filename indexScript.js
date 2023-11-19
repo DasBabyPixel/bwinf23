@@ -87,7 +87,7 @@ function createPlayground() {
     // Das Spielfeld wird geleert
     playground.innerHTML = "";
     // Berechnung der Zellengröße basierend auf der Länge des Fensters
-    const cellSize = `min(${80 / (laenge + 1)}vw, ${50 / hoehe}vh)`;
+    const cellSize = `min(${95 / (laenge + 1)}vw, ${80 / hoehe}vh)`;
 
     // Schleife für jede Zeile im Spielfeld (abhängig von der Höhe)
     for (let rowIndex = 0; rowIndex < hoehe; rowIndex++) {
